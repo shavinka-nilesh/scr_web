@@ -15,5 +15,14 @@ public function facility()
 {
     return $this->belongsTo(Facility::class);
 }
-
+protected $fillable = [
+    'user_id',
+    'facility_id',
+    'date',
+    'time_slot',
+    'status', // pending, paid, cancelled
+];
+protected $casts = [
+    'date' => 'date',
+];
 }

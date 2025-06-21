@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('phone_number')->nullable();
-$table->string('address')->nullable();
-$table->string('role')->default('user'); // options: user, admin
+         Schema::table('users', function (Blueprint $table) {
+           $table->string('role')->default('user'); // options: user, admin
+
 
         });
     }
@@ -24,9 +23,8 @@ $table->string('role')->default('user'); // options: user, admin
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('phone_number')->nullable();
-$table->string('address')->nullable();
+          Schema::table('users', function (Blueprint $table) {
+            $table->string('role')->default('user'); // options: user, admin
 
         });
     }

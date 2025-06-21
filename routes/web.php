@@ -31,5 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('coaching-sessions', CoachingSessionController::class);
     Route::resource('payments', PaymentController::class);
 });
+Route::middleware(['auth', 'admin.only'])->group(function () {
+    // Route::resource('facilities', FacilityController::class);
+    // Route::resource('coaches', CoachController::class);
+});
 
 require __DIR__.'/auth.php';

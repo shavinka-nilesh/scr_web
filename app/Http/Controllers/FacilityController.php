@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Facility;
 use Illuminate\Http\Request;
 
 class FacilityController extends Controller
@@ -11,7 +11,8 @@ class FacilityController extends Controller
      */
     public function index()
     {
-        //
+           $facilities = Facility::all();
+        return view('facilities.index', compact('facilities'));
     }
 
     /**
@@ -19,7 +20,7 @@ class FacilityController extends Controller
      */
     public function create()
     {
-        //
+        return view('facilities.create');
     }
 
     /**
@@ -27,7 +28,17 @@ class FacilityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $request->validate([
+            'name' => 'required|string',
+            'sport_type' => 'required|string',
+            'capacity' => 'required|string',
+            'location' => 'required|string',
+            'description' => 'required|string',
+        ]);
+
+        Facility::create($request->all());
+
+        return redirect()->route('facilities.index')->with('success', 'Facilitiey added successfully.');
     }
 
     /**
