@@ -19,7 +19,8 @@ protected $fillable = [
     'user_id',
     'facility_id',
     'date',
-    'time_slot',
+    'start_time',
+    'end_time',
     'status', // pending, paid, cancelled
 ];
 protected $casts = [
