@@ -28,11 +28,11 @@
                 <td class="px-4 py-2">{{ $facility->name }}</td>
                 <td class="px-4 py-2">{{ $facility->sport_type }}</td>
                 <td class="px-4 py-2">{{ $facility->capacity }}</td>
-                   <td class="px-4 py-2">{{ $facility->Location }}</td>
+                   <td class="px-4 py-2">{{ $facility->location }}</td>
                       <td class="px-4 py-2">{{ $facility->description }}</td>
                 <td class="px-4 py-2">
-                    <a href="{{ route('facilities.edit', $coach->id) }}" class="text-blue-600">Edit</a> |
-                    <form action="{{ route('facilities.destroy', $coach->id) }}" method="POST" class="inline-block">
+                    <a href="{{ route('facilities.edit', $facility->id) }}" class="text-blue-600">Edit</a> |
+                    <form action="{{ route('facilities.destroy', $facility->id) }}" method="POST" class="inline-block">
                         @csrf
                         @method('DELETE')
                         <button type="submit" onclick="return confirm('Are you sure?')" class="text-red-600">Delete</button>

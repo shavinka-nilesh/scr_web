@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class CoachingSession extends Model
 {
     protected $fillable = [
+         'user_id',
     'coach_id',
-    'facility_id',
-    'date',
-    'time_slot',
-    'available_slots',
+    'session_date',
+    'start_time',
+    'end_time',
+    'status',
 ];
 protected $casts = [
     'date' => 'date',
@@ -25,5 +26,9 @@ public function coach()
 public function facility()
 {
     return $this->belongsTo(Facility::class);
+}
+
+public function user() {
+    return $this->belongsTo(User::class);
 }
 }

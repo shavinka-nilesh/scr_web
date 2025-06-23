@@ -33,7 +33,7 @@ class FacilityController extends Controller
             'sport_type' => 'required|string',
             'capacity' => 'required|string',
             'location' => 'required|string',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
         ]);
 
         Facility::create($request->all());
@@ -54,7 +54,8 @@ class FacilityController extends Controller
      */
     public function edit(string $id)
     {
-        //
+          $facility = Facility::findOrFail($id);
+         return view('facilities.edit', compact('facility'));
     }
 
     /**
@@ -62,7 +63,22 @@ class FacilityController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+         $request->validate([
+            'name' => 'required|string',
+            'sport_type' => 'required|string',
+            'capacity' => 'required|string',
+            'location' => 'required|string',
+            'description' => 'nullable|string',
+        ]);
+
+        // $coach->update($request->all());
+        // Fetch the coach by id first
+    $facility = Facility::findOrFail($id);
+
+    // Then update with validated data
+    $facility->update($request->only(['name', 'sport_type', 'capacity', 'location', 'description']));
+
+        return redirect()->route('facilities.index')->with('success', 'Facility updated successfully.');
     }
 
     /**
@@ -70,6 +86,9 @@ class FacilityController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+          $facility = Facility::findOrFail($id);
+        $facility->delete();
+
+        return redirect()->route('facilities.index')->with('success', 'Facility deleted successfully.');
     }
 }

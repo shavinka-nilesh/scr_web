@@ -24,23 +24,23 @@
 
         <div class="mb-4">
             <label for="specialization" class="block text-gray-700 font-semibold mb-2">Sport Type</label>
-            <input type="text" name="specialization" id="specialization" value="{{ old('sport_type') }}" required
+            <input type="text" name="sport_type" id="sport_type" value="{{ old('sport_type') }}" required
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
         </div>
 
         <div class="mb-4">
             <label for="contact_number" class="block text-gray-700 font-semibold mb-2">Capacity</label>
-            <input type="text" name="contact_number" id="contact_number" value="{{ old('capacity') }}" required
+            <input type="text" name="capacity" id="capacity" value="{{ old('capacity') }}" required
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
         </div>
          <div class="mb-4">
             <label for="contact_number" class="block text-gray-700 font-semibold mb-2">Location</label>
-            <input type="text" name="contact_number" id="contact_number" value="{{ old('location') }}" required
+            <input type="text" name="location" id="location" value="{{ old('location') }}" required
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
         </div>
         <div class="mb-4">
             <label for="contact_number" class="block text-gray-700 font-semibold mb-2">Description</label>
-            <input type="text" name="contact_number" id="contact_number" value="{{ old('description') }}" required
+            <input type="text" name="description" id="description" value="{{ old('description') }}" required
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
         </div>
         <div class="flex justify-between">
@@ -50,3 +50,12 @@
     </form>
 </div>
 @endsection
+<script>
+    console.log("Form old values:", {
+        name: @json(old('name')),
+        sport_type: @json(old('sport_type')),
+        capacity: @json(old('capacity')),
+        location: @json(old('location')),
+        description: @json(old('description')),
+    });
+</script>

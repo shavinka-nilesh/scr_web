@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('admins', AdminController::class);
     Route::resource('bookings', BookingController::class);
     Route::resource('coaches', CoachController::class);
-    Route::resource('coaching-sessions', CoachingSessionController::class);
+    Route::resource('coachingsessions', CoachingSessionController::class);
     Route::resource('payments', PaymentController::class);
 });
 Route::middleware(['auth', 'admin.only'])->group(function () {
