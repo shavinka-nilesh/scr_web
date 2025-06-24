@@ -63,7 +63,10 @@ class BookingController extends Controller
      */
     public function edit(string $id)
     {
-        //
+            $users = User::all();
+    $facilities = Facility::all();
+         $Bookings = Booking::findOrFail($id);
+         return view('bookings.edit', compact('facilities','users', 'Bookings'));
     }
 
     /**
@@ -71,7 +74,22 @@ class BookingController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+       Log::info('Bookings update request:', $request->all());
+
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'facility_id' => 'required|exists:facilities,id',
+            'date' => 'required|date',
+            'start_time' => 'required|string',
+             'end_time' => 'required|string',
+            'status' => 'required|in:pending,confirmed,cancelled',
+        ]);
+
+        $Bookings = Booking::findOrFail($id);
+
+          $Bookings->update($request->all());
+
+        return redirect()->route('bookings.index')->with('success', 'Booking Updated successfully.');
     }
 
     /**
@@ -79,6 +97,9 @@ class BookingController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+         $Bookings = Booking::findOrFail($id);
+        $Bookings->delete();
+
+        return redirect()->route('bookings.index')->with('success', 'Booking deleted successfully.');
     }
 }

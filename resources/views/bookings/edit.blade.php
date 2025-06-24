@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mx-auto p-4 max-w-lg">
-        <h1 class="text-2xl font-bold mb-6">Edit Coaching Session</h1>
+        <h1 class="text-2xl font-bold mb-6">Edit Bookings</h1>
 
         @if ($errors->any())
             <div class="mb-4 bg-red-100 text-red-700 p-3 rounded">
@@ -14,8 +14,7 @@
             </div>
         @endif
 
-        <form action="{{ route('coachingsessions.update', $coachingSessions->id) }}" method="POST"
-            class="bg-white p-6 rounded shadow">
+        <form action="{{ route('bookings.update', $Bookings->id) }}" method="POST" class="bg-white p-6 rounded shadow">
             @csrf
             @method('PUT')
 
@@ -25,49 +24,52 @@
                 <select name="user_id" id="user_id" class="form-select w-full px-3 py-2 border rounded">
                     @foreach ($users as $user)
                         <option value="{{ $user->id }}"
-                            {{ old('user_id', $coachingSessions->user_id) == $user->id ? 'selected' : '' }}>
+                            {{ old('user_id', $Bookings->user_id) == $user->id ? 'selected' : '' }}>
                             {{ $user->name }} ({{ $user->email }})
                         </option>
                     @endforeach
                 </select>
             </div>
 
-            {{-- Coach Dropdown --}}
+            {{-- Facility Dropdown --}}
             <div class="mb-4">
-                <label for="coach_id" class="block font-semibold mb-2">Coach</label>
-                <select name="coach_id" id="coach_id" class="form-select w-full px-3 py-2 border rounded">
-                    @foreach ($coaches as $coach)
-                        <option value="{{ $coach->id }}"
-                            {{ old('coach_id', $coachingSessions->coach_id) == $coach->id ? 'selected' : '' }}>
-                            {{ $coach->name }}
+                <label for="facility_id" class="block font-semibold mb-2">Facility</label>
+                <select name="facility_id" id="facility_id" class="form-select w-full px-3 py-2 border rounded">
+                    @foreach ($facilities as $facility)
+                        <option value="{{ $facility->id }}"
+                            {{ old('facility_id', $Bookings->facility_id) == $facility->id ? 'selected' : '' }}>
+                            {{ $facility->name }} ({{ $facility->sport_type }})
                         </option>
                     @endforeach
                 </select>
             </div>
 
+            {{-- Date Picker --}}
             <div class="mb-4">
-                <label for="coach_id" class="block font-semibold mb-2">Date</label>
-                <input type="date" name="session_date"
-                    value="{{ old('session_date', \Carbon\Carbon::parse($coachingSessions->session_date)->format('Y-m-d')) }}"
-                    class="form-control w-full px-3 py-2 border rounded" required>
+                <label for="date" class="block font-semibold mb-2">Date</label>
+                <input type="date" name="date" id="date" class="form-control w-full px-3 py-2 border rounded"
+                    value="{{ old('date', \Carbon\Carbon::parse($Bookings->date)->format('Y-m-d')) }}" required>
+            </div>
 
-            </div>
+            {{-- Start Time Picker --}}
             <div class="mb-4">
-                <label for="coach_id" class="block font-semibold mb-2">Start Time</label>
+                <label for="start_time" class="block font-semibold mb-2">Start Time</label>
                 <input type="time" name="start_time" id="start_time" class="form-control w-full px-3 py-2 border rounded"
-                    value="{{ old('start_time', $coachingSessions->start_time) }}" required>
+                    value="{{ old('start_time', $Bookings->start_time) }}" required>
             </div>
+
+            {{-- End Time Picker --}}
             <div class="mb-4">
-                <label for="coach_id" class="block font-semibold mb-2">End Time</label>
+                <label for="end_time" class="block font-semibold mb-2">End Time</label>
                 <input type="time" name="end_time" id="end_time" class="form-control w-full px-3 py-2 border rounded"
-                    value="{{ old('end_time', $coachingSessions->end_time) }}" required>
+                    value="{{ old('end_time', $Bookings->end_time) }}" required>
             </div>
 
             {{-- Status Dropdown --}}
             <div class="mb-4">
                 <label for="status" class="block font-semibold mb-2">Status</label>
                 @php
-                    $status = old('status', $coachingSessions->status);
+                    $status = old('status', $Bookings->status);
                 @endphp
                 <select name="status" id="status" class="form-select w-full px-3 py-2 border rounded">
                     <option value="pending" {{ $status == 'pending' ? 'selected' : '' }}>Pending</option>
@@ -80,7 +82,7 @@
                 <a href="{{ route('coachingsessions.index') }}"
                     class="bg-gray-400 text-black px-4 py-2 rounded hover:bg-gray-500">Cancel</a>
                 <button type="submit" class="bg-green-600 text-black px-4 py-2 rounded hover:bg-green-700">Update
-                    Coach</button>
+                </button>
             </div>
         </form>
     </div>
