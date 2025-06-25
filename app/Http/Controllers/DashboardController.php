@@ -6,6 +6,7 @@ use App\Models\Coach;
 use App\Models\Facility;
 use App\Models\CoachingSession;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -23,7 +24,7 @@ public function index()
         ->groupBy('day')
         ->orderBy('day')
         ->pluck('count', 'day');
-
+Log::info("Counts".$bookingCount);
     $dates = $bookings->keys()->map(fn($d) => Carbon::parse($d)->format('M d'))->toArray();
     $counts = $bookings->values()->toArray();
 

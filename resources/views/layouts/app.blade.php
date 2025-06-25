@@ -41,11 +41,14 @@
                 @endisset
 
                 <!-- Page Content -->
-                <main>
-                    @yield('content')
+                <main class="bg-white p-6 min-h-screen">
+                    <div class="max-w-7xl mx-auto">
+                        @yield('content')
+                    </div>
                 </main>
 
- <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+
+                <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
             </div>
         </div>
     </div>

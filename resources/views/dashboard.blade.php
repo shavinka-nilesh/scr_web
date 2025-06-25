@@ -1,42 +1,23 @@
 <x-app-layout>
+    {{-- ✅ Just the page title in the header --}}
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}
         </h2>
-    </x-slot>
-
+         {{-- ✅ Actual content goes here --}}
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                    {{-- Coaches --}}
-                    <div class="bg-white shadow p-4 rounded text-center">
+                    <a href="{{ route('coaches.index') }}" class="block bg-white shadow p-4 rounded text-center hover:bg-blue-50 transition">
                         <h2 class="text-lg font-semibold">Coaches</h2>
                         <p class="text-3xl font-bold text-blue-600">{{ $coachCount }}</p>
-                    </div>
-
-                    {{-- Facilities --}}
-                    <div class="bg-white shadow p-4 rounded text-center">
-                        <h2 class="text-lg font-semibold">Facilities</h2>
-                        <p class="text-3xl font-bold text-green-600">{{ $facilityCount }}</p>
-                    </div>
-
-                    {{-- Sessions --}}
-                    <div class="bg-white shadow p-4 rounded text-center">
-                        <h2 class="text-lg font-semibold">Sessions (This Week)</h2>
-                        <p class="text-3xl font-bold text-purple-600">{{ $coachingSessionCount }}</p>
-                    </div>
-
-                    {{-- Bookings --}}
-                    <div class="bg-white shadow p-4 rounded text-center">
-                        <h2 class="text-lg font-semibold">Bookings (Today)</h2>
-                        <p class="text-3xl font-bold text-red-600">{{ $bookingCount }}</p>
-                    </div>
+                    </a>
+                    <!-- Add other tiles here... -->
                 </div>
 
-                {{-- Chart --}}
                 <div class="bg-white p-4 mt-4 rounded shadow">
                     <h3 class="text-lg font-semibold mb-2">Booking Trends</h3>
                     <canvas id="bookingChart" height="120"></canvas>
@@ -65,9 +46,14 @@
             options: {
                 responsive: true,
                 scales: {
-                    y: { beginAtZero: true }
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
         });
     </script>
+    </x-slot>
+
+   
 </x-app-layout>
