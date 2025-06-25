@@ -7,7 +7,12 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CoachController;
 use App\Http\Controllers\CoachingSessionController;
 use App\Http\Controllers\PaymentController;
-
+use App\Http\Controllers\DashboardController;
+use App\Models\Booking;
+use App\Models\User;
+use App\Models\Coach;
+use App\Models\Facility;
+use App\Models\CoachingSession;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,10 +20,10 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+    
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
