@@ -36,6 +36,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('coaches', CoachController::class);
     Route::resource('coachingsessions', CoachingSessionController::class);
     Route::resource('payments', PaymentController::class);
+
+    Route::get('/calendar', [\App\Http\Controllers\CalendarController::class, 'index'])->name('calendar.index');
+Route::get('/calendar/events', [\App\Http\Controllers\CalendarController::class, 'events'])->name('calendar.events');
+Route::post('/calendar/store', [\App\Http\Controllers\CalendarController::class, 'store'])->name('calendar.store');
+
 });
 Route::middleware(['auth', 'admin.only'])->group(function () {
     // Route::resource('facilities', FacilityController::class);
