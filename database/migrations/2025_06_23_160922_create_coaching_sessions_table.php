@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('coaching__sessions', function (Blueprint $table) {
-           $table->id();
+        Schema::create('coaching_sessions', function (Blueprint $table) {
+            $table->id();
     $table->foreignId('user_id')->constrained();
     $table->foreignId('coach_id')->constrained();
     $table->dateTime('session_date');
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('coaching__sessions');
+        Schema::dropIfExists('coaching_sessions');
     }
 };

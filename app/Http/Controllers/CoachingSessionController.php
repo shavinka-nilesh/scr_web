@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\CoachingSession;
+use App\Models\User;
+use App\Models\Coach;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
 class CoachingSessionController extends Controller
@@ -11,7 +14,8 @@ class CoachingSessionController extends Controller
      */
     public function index()
     {
-        //
+       $coachingSessions = CoachingSession::with(['user', 'coach'])->get();
+        return view('coachingsessions.index', compact('coachingSessions'));
     }
 
     /**
@@ -19,7 +23,9 @@ class CoachingSessionController extends Controller
      */
     public function create()
     {
-        //
+         $users = User::all();
+    $coaches = Coach::all();
+    return view('coachingsessions.create', compact('users', 'coaches'));
     }
 
     /**
@@ -27,7 +33,20 @@ class CoachingSessionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Log::info('CoachingSession store request:', $request->all());
+
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'coach_id' => 'required|exists:coaches,id',
+            'session_date' => 'required|date',
+            'start_time' => 'required|string',
+             'end_time' => 'required|string',
+            'status' => 'required|in:pending,confirmed,cancelled',
+        ]);
+
+        CoachingSession::create($request->all());
+
+        return redirect()->route('coachingsessions.index')->with('success', 'Coaching Session added successfully.');
     }
 
     /**
@@ -43,7 +62,10 @@ class CoachingSessionController extends Controller
      */
     public function edit(string $id)
     {
-        //
+         $users = User::all();
+    $coaches = Coach::all();
+         $coachingSessions = CoachingSession::findOrFail($id);
+         return view('coachingsessions.edit', compact('coachingSessions','users', 'coaches'));
     }
 
     /**
@@ -51,7 +73,21 @@ class CoachingSessionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+         Log::info('CoachingSession update request:', $request->all());
+
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'coach_id' => 'required|exists:coaches,id',
+            'session_date' => 'required|date',
+            'start_time' => 'required|string',
+             'end_time' => 'required|string',
+            'status' => 'required|in:pending,confirmed,cancelled',
+        ]);
+         $coachingSessions = CoachingSession::findOrFail($id);
+
+          $coachingSessions->update($request->all());
+
+        return redirect()->route('coachingsessions.index')->with('success', 'Coaching Session Updated successfully.');
     }
 
     /**
@@ -59,6 +95,9 @@ class CoachingSessionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+         $coachingSessions = CoachingSession::findOrFail($id);
+        $coachingSessions->delete();
+
+        return redirect()->route('coachingsessions.index')->with('success', 'Coaching Session deleted successfully.');
     }
 }

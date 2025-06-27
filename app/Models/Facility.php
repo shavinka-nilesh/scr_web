@@ -10,5 +10,15 @@ class Facility extends Model
 {
     return $this->hasMany(Booking::class);
 }
-
+public function coachingSessions()
+{
+    return $this->hasMany(CoachingSession::class);
+}
+protected $fillable = [
+    'name',
+    'location',
+    'description',
+    'capacity',
+    'sport_type',
+];
 }
