@@ -19,7 +19,10 @@ public function sportType()
 {
     return $this->belongsTo(SportType::class);
 }
-
+    public function images()
+{
+    return $this->hasMany(FacilityImage::class);
+}
 protected $fillable = [
     'name',
     'location',

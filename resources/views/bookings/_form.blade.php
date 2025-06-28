@@ -30,5 +30,5 @@
         </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">Create Booking</button>
+    <button type="submit" class="btn btn-primary">Create Bookings</button>
 </form>

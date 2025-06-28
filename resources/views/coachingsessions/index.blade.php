@@ -14,6 +14,7 @@
             </div>
         @endif
 
+
         <table class="table-auto w-full mt-4 bg-white shadow rounded">
             <thead>
                 <tr>

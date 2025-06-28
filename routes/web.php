@@ -5,6 +5,7 @@ use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CoachController;
+use App\Http\Controllers\SportTypeController;
 use App\Http\Controllers\CoachingSessionController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CalendarController;
@@ -34,6 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('facilities', FacilityController::class);
     Route::resource('admins', AdminController::class);
     Route::resource('bookings', BookingController::class);
+        Route::resource('sport_types', SportTypeController::class);
     Route::resource('coaches', CoachController::class);
     Route::resource('coachingsessions', CoachingSessionController::class);
     Route::resource('payments', PaymentController::class);
@@ -42,9 +44,9 @@ Route::middleware('auth')->group(function () {
 Route::get('/calendar/events', [CalendarController::class, 'events'])->name('calendar.events');
 Route::post('/calendar/store', [CalendarController::class, 'store'])->name('calendar.store');
 
-// profile routes
+// Other routes
 Route::get('/coaches-list', [CoachController::class, 'list'])->name('coaches.list');
-
+Route::get('/sport-type-list', [SportTypeController::class, 'list'])->name('sport_types.list');
 
 });
 Route::middleware(['auth', 'admin.only'])->group(function () {

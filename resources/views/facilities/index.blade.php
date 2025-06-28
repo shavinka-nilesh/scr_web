@@ -11,10 +11,15 @@
             {{ session('success') }}
         </div>
     @endif
-
+@if(session('error'))
+    <div class="mt-4 bg-red-200 text-red-800 p-2 rounded">
+        {{ session('error') }}
+    </div>
+@endif
     <table class="table-auto w-full mt-4 bg-white shadow rounded">
         <thead>
             <tr>
+                <th class="px-4 py-2"></th>
                 <th class="px-4 py-2">Name</th>
                 <th class="px-4 py-2">Sport Type</th>
                 <th class="px-4 py-2">Capacity</th>
@@ -25,6 +30,13 @@
         <tbody>
             @foreach($facilities as $facility)
             <tr class="border-t">
+               <td class="px-4 py-2">
+    @forelse($facility->images as $image)
+        <img src="{{ asset('storage/' . $image->path) }}" class="h-20 w-20 object-cover rounded" />
+    @empty
+        <span class="text-gray-500">No image</span>
+    @endforelse
+</td>
                 <td class="px-4 py-2">{{ $facility->name }}</td>
                 <td class="px-4 py-2">{{ $facility->sport_type }}</td>
                 <td class="px-4 py-2">{{ $facility->capacity }}</td>

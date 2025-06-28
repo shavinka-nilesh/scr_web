@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Coach;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 class CoachController extends Controller
 {
     /**
@@ -85,9 +85,16 @@ class CoachController extends Controller
     public function destroy(string $id)
     {
          $coach = Coach::findOrFail($id);
-        $coach->delete();
+          if ($coach->coachingSessions()->exists()) {
+            Log::info('Coach cant delete');
+        return redirect()->route('coaches.index') ->with('error', 'Cannot delete coach with scheduled coaching sessions.');
+    } else{
+ $coach->delete();
 
-        return redirect()->route('coaches.index')->with('success', 'Coach deleted successfully.');
+        
+    }
+
+       return redirect()->route('coaches.index')->with('success', 'Coach deleted successfully.');
     }
 
     public function list()
