@@ -7,6 +7,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CoachController;
 use App\Http\Controllers\CoachingSessionController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\DashboardController;
 use App\Models\Booking;
 use App\Models\User;
@@ -37,9 +38,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('coachingsessions', CoachingSessionController::class);
     Route::resource('payments', PaymentController::class);
 
-    Route::get('/calendar', [\App\Http\Controllers\CalendarController::class, 'index'])->name('calendar.index');
-Route::get('/calendar/events', [\App\Http\Controllers\CalendarController::class, 'events'])->name('calendar.events');
-Route::post('/calendar/store', [\App\Http\Controllers\CalendarController::class, 'store'])->name('calendar.store');
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+Route::get('/calendar/events', [CalendarController::class, 'events'])->name('calendar.events');
+Route::post('/calendar/store', [CalendarController::class, 'store'])->name('calendar.store');
+
+// profile routes
+Route::get('/coaches-list', [CoachController::class, 'list'])->name('coaches.list');
+
 
 });
 Route::middleware(['auth', 'admin.only'])->group(function () {

@@ -4,28 +4,31 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\Facility;
 use App\Models\CoachingSession;
+use App\Models\Coach;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 class CalendarController extends Controller
 {
     public function index()
 {
      $facilities = Facility::all();
-    return view('calendar.calendar', compact('facilities'));
+     $coaches = Coach::all();
+    return view('calendar.calendar', compact('facilities','coaches'));
 }
 
 public function events()
 {
-    $bookings = Booking::select('id', 'date as start', 'start_time', 'end_time')->get();
-    $sessions = CoachingSession::select('id', 'session_date as start', 'start_time', 'end_time')->get();
+    $bookings = Booking::all();
+    Log::info('Bookings in calendar:', $bookings->toArray());
+    $sessions = CoachingSession::all();
 
     $events = [];
 
     foreach ($bookings as $b) {
         $events[] = [
             'title' => 'Booking',
-            'start' => $b->start . 'T' . $b->start_time,
-            'end'   => $b->start . 'T' . $b->end_time,
+           'start' => \Carbon\Carbon::parse($b->date)->format('Y-m-d') . 'T' . $b->start_time,
+           'end' => \Carbon\Carbon::parse($b->date)->format('Y-m-d') . 'T' . $b->end_time,
             'color' => 'blue',
         ];
     }
@@ -33,28 +36,41 @@ public function events()
     foreach ($sessions as $s) {
         $events[] = [
             'title' => 'Coaching Session',
-            'start' => $s->start . 'T' . $s->start_time,
-            'end'   => $s->start . 'T' . $s->end_time,
+           'start' => \Carbon\Carbon::parse($s->session_date)->format('Y-m-d') . 'T' . $s->start_time,
+ 'end' => \Carbon\Carbon::parse($s->session_date)->format('Y-m-d') . 'T' . $s->end_time,
             'color' => 'purple',
         ];
     }
+
+   Log::info('Returned calendar events:', $events);
 
     return response()->json($events);
 }
 
 public function store(Request $request)
 {
-    // Example: add booking, you can adapt this for sessions too
-    Booking::create([
+   Log::info('calendar store request:', $request->all());
+
+        $request->validate([
+            'facility_id' => 'required|exists:facilities,id',
+            'date' => 'required|date',
+            'start_time' => 'required|string',
+             'end_time' => 'required|string',
+            'status' => 'required|in:pending,confirmed,cancelled',
+        ]);
+Log::info('Auth user:', ['user' => auth()->user()]);
+Log::info('Auth id:', ['id' => auth()->id()]);
+
+          Booking::create([
         'user_id' => auth()->id(),
         'facility_id' => $request->facility_id,
         'date' => $request->date,
         'start_time' => $request->start_time,
         'end_time' => $request->end_time,
-        'status' => 'pending',
+        'status' => $request->status,
     ]);
 
-    return response()->json(['success' => true]);
+        return redirect()->route('calendar.index')->with('success', 'Booking added successfully.');
 }
 
 }

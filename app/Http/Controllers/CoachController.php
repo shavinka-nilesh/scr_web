@@ -89,4 +89,11 @@ class CoachController extends Controller
 
         return redirect()->route('coaches.index')->with('success', 'Coach deleted successfully.');
     }
+
+    public function list()
+{
+    $coaches = Coach::all();
+    return view('coaches.list', compact('coaches'));
+}
+
 }
