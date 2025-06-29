@@ -46,13 +46,17 @@
                 <input type="text" name="description" id="description" value="{{ old('description') }}" required
                     class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
             </div>
-            <div id="preview" class="flex gap-2 mt-2"></div>
+           <!-- Image Preview Container -->
+<div id="imagePreview" class="flex gap-2 flex-wrap mb-4"></div>
+
             <div class="mb-4">
-                <label for="images" class="block font-semibold mb-2">Upload Images (max 4)</label>
-                <input type="file" name="images[]" multiple accept="image/*"
-                    class="w-full border border-gray-300 rounded px-3 py-2"
-                    onchange="if(this.files.length > 4){ alert('Only up to 4 images allowed'); this.value=''; }">
-            </div>
+    <label for="images" class="block font-semibold mb-2">Upload Images (select multiple images at once)</label>
+    <input type="file" name="images[]" multiple accept="image/*"
+           class="w-full border border-gray-300 rounded px-3 py-2"
+           id="imageInput"
+           onchange="previewImages()">
+</div>
+
             <div class="flex justify-between">
                 <a href="{{ route('facilities.index') }}"
                     class="bg-gray-400 text-black px-4 py-2 rounded hover:bg-gray-500">Cancel</a>
@@ -70,18 +74,29 @@
         description: @json(old('description')),
     });
 
-    document.querySelector('input[name="images[]"]').addEventListener('change', function(e) {
-    const preview = document.getElementById('preview');
-    preview.innerHTML = ''; // clear old previews
-    Array.from(e.target.files).forEach(file => {
+    function previewImages() {
+    const input = document.getElementById('imageInput');
+    const preview = document.getElementById('imagePreview');
+
+    if (input.files.length > 4) {
+        alert('Only up to 4 images allowed');
+        input.value = '';
+        return;
+    }
+
+    // Clear only previews related to this selection (optional)
+    preview.innerHTML = '';
+
+    Array.from(input.files).forEach(file => {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = e => {
             const img = document.createElement('img');
             img.src = e.target.result;
-            img.className = "w-20 h-20 object-cover rounded";
+            img.className = "w-24 h-24 object-cover rounded border shadow";
             preview.appendChild(img);
         };
         reader.readAsDataURL(file);
     });
-});
+}
+
 </script>
