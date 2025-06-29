@@ -97,9 +97,17 @@ class CoachController extends Controller
        return redirect()->route('coaches.index')->with('success', 'Coach deleted successfully.');
     }
 
-    public function list()
+  public function list(Request $request)
 {
-    $coaches = Coach::all();
+    $query = $request->input('search');
+
+    $coaches = Coach::query()
+        ->when($query, function ($q) use ($query) {
+            $q->where('name', 'like', "%{$query}%")
+              ->orWhere('specialization', 'like', "%{$query}%");
+        })
+        ->get();
+
     return view('coaches.list', compact('coaches'));
 }
 

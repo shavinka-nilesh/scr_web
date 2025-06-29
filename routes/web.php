@@ -50,6 +50,7 @@ Route::post('/calendar/store', [CalendarController::class, 'store'])->name('cale
 // Other routes
 Route::get('/coaches-list', [CoachController::class, 'list'])->name('coaches.list');
 Route::get('/sport-type-list', [SportTypeController::class, 'list'])->name('sport_types.list');
+Route::get('/facility-list', [FacilityController::class, 'list'])->name('facilities.list');
 Route::delete('/facility-image/{id}', [FacilityController::class, 'deleteImage'])->name('facility.image.delete');
 Route::put('/users/{id}/change-password', [UserController::class, 'changePassword'])->name('users.change-password');
 

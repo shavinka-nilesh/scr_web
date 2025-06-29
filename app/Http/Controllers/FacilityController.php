@@ -131,4 +131,19 @@ if ($request->hasFile('images')) {
 
     return response()->json(['success' => true]);
 }
+
+public function list(Request $request)
+{
+    $search = $request->input('search');
+
+    $facilities = Facility::with('images')
+        ->when($search, function ($query, $search) {
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('sport_type', 'like', "%{$search}%");
+        })
+        ->get();
+
+    return view('facilities.list', compact('facilities'));
+}
+
 }
