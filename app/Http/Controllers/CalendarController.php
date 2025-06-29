@@ -30,6 +30,7 @@ public function events()
            'start' => \Carbon\Carbon::parse($b->date)->format('Y-m-d') . 'T' . $b->start_time,
            'end' => \Carbon\Carbon::parse($b->date)->format('Y-m-d') . 'T' . $b->end_time,
             'color' => 'blue',
+               'textColor' => 'black'
         ];
     }
 
