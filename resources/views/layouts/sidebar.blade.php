@@ -8,6 +8,7 @@
         <a href="{{ route('facilities.index') }}" class="block px-6 py-2 text-gray-700 hover:bg-gray-200">Facilities</a>
         <a href="{{ route('bookings.index') }}" class="block px-6 py-2 text-gray-700 hover:bg-gray-200">Bookings</a>
         <a href="{{ route('coaches.index') }}" class="block px-6 py-2 text-gray-700 hover:bg-gray-200">Coaches</a>
+         <a href="{{ route('users.index') }}" class="block px-6 py-2 text-gray-700 hover:bg-gray-200">Users</a>
           <a href="{{ route('sport_types.index') }}" class="block px-6 py-2 text-gray-700 hover:bg-gray-200">Sport Types</a>
          <a href="{{ route('coaches.list') }}" class="block px-6 py-2 text-gray-700 hover:bg-gray-200">Coaches Profile</a>
          <a href="{{ route('sport_types.list') }}" class="block px-6 py-2 text-gray-700 hover:bg-gray-200">Sports Profiles</a>

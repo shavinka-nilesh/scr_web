@@ -5,6 +5,7 @@ use App\Models\Facility;
 use App\Models\SportType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FacilityImage;
 
 class FacilityController extends Controller
 {
@@ -117,4 +118,17 @@ if ($request->hasFile('images')) {
 
         return redirect()->route('facilities.index')->with('success', 'Facility deleted successfully.');
     }
+
+    public function deleteImage($id)
+{
+    $image = FacilityImage::findOrFail($id);
+
+    // Delete the image file
+    // \Storage::disk('public')->delete($image->path);
+
+    // Delete the DB record
+    $image->delete();
+
+    return response()->json(['success' => true]);
+}
 }

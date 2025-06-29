@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mx-auto p-4 max-w-lg">
-        <h1 class="text-2xl font-bold mb-6">Edit Facility</h1>
+        <h1 class="text-2xl font-bold mb-6">Edit User Details</h1>
 
         @if ($errors->any())
             <div class="mb-4 bg-red-100 text-red-700 p-3 rounded">
@@ -14,19 +14,19 @@
             </div>
         @endif
 
-        <form action="{{ route('facilities.update', $facility->id) }}" method="POST" enctype="multipart/form-data"
+        <form action="{{ route('users.update', $User->id) }}" method="POST" enctype="multipart/form-data"
             class="bg-white p-6 rounded shadow">
             @csrf
             @method('PUT')
 
             <div class="mb-4">
                 <label for="name" class="block text-gray-700 font-semibold mb-2">Name</label>
-                <input type="text" name="name" id="name" value="{{ old('name', $facility->name) }}" required
+                <input type="text" name="name" id="name" value="{{ old('name', $User->name) }}" required
                     class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
             </div>
 
 
-            <div class="mb-4">
+            {{-- <div class="mb-4">
                 <label for="sport_type" class="block font-semibold mb-2">Sport Type</label>
                 <select name="sport_type" id="sport_type" class="form-select w-full px-3 py-2 border rounded">
                     @foreach ($SportType as $coach)
@@ -36,29 +36,33 @@
                         </option>
                     @endforeach
                 </select>
-            </div>
+            </div> --}}
 
             <div class="mb-4">
-                <label for="contact_number" class="block text-gray-700 font-semibold mb-2">Capacity</label>
-                <input type="text" name="capacity" id="capacity" value="{{ old('capacity', $facility->capacity) }}"
-                    required
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-            </div>
+                <label for="role" class="block text-gray-700 font-semibold mb-2">Role</label>
+                <select name="role" id="role" class="form-select w-full px-3 py-2 border rounded" required>
+                    <option value="user" {{ old('role', $User->role ?? '') == 'user' ? 'selected' : '' }}>User</option>
+                    <option value="admin" {{ old('role', $User->role ?? '') == 'admin' ? 'selected' : '' }}>Admin</option>
+                </select>
 
-            <div class="mb-4">
-                <label for="contact_number" class="block text-gray-700 font-semibold mb-2">Location</label>
-                <input type="text" name="location" id="location" value="{{ old('location', $facility->location) }}"
-                    required
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
             </div>
-
             <div class="mb-4">
-                <label for="contact_number" class="block text-gray-700 font-semibold mb-2">Description</label>
-                <input type="text" name="description" id="description"
-                    value="{{ old('description', $facility->description) }}" required
+                <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
+                <input type="text" name="email" id="email" value="{{ old('email', $User->email) }}" required
                     class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
             </div>
             <div class="mb-4">
+                <label for="phone_number" class="block text-gray-700 font-semibold mb-2">Telephone</label>
+                <input type="text" name="phone_number" id="phone_number"
+                    value="{{ old('phone_number', $User->phone_number) }}" required
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+            <div class="mb-4">
+                <label for="address" class="block text-gray-700 font-semibold mb-2">Address</label>
+                <input type="text" name="address" id="address" value="{{ old('address', $User->address) }}" required
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+            {{-- <div class="mb-4">
                 <label class="block text-gray-700 font-semibold mb-2">Existing Images</label>
                 <div class="flex flex-wrap gap-4">
                     @forelse($facility->images as $image)
@@ -78,8 +82,8 @@
                         <p class="text-gray-500">No images uploaded.</p>
                     @endforelse
                 </div>
-            </div>
-            <div id="previewNewImages" class="flex gap-2 flex-wrap mb-4"></div>
+            </div> --}}
+            {{-- <div id="previewNewImages" class="flex gap-2 flex-wrap mb-4"></div>
             <div class="mb-4">
                 <label for="images" class="block text-gray-700 font-semibold mb-2">Upload Images (select multiple images
                     at once)</label>
@@ -87,15 +91,54 @@
                     class="w-full border border-gray-300 rounded px-3 py-2" onchange="previewSelectedImages()" />
 
 
-            </div>
+            </div> --}}
 
             <div class="flex justify-between">
-                <a href="{{ route('facilities.index') }}"
+                <a href="{{ route('users.index') }}"
                     class="bg-gray-400 text-black px-4 py-2 rounded hover:bg-gray-500">Cancel</a>
                 <button type="submit" class="bg-green-600 text-black px-4 py-2 rounded hover:bg-green-700">Update
-                    Coach</button>
+                    User</button>
             </div>
         </form>
+
+        <!-- Change Password Modal Trigger -->
+<button type="button" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+    Change Password
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="changePasswordForm" method="POST" action="{{ route('users.change-password', $User->id) }}">
+      @csrf
+      @method('PUT')
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="changePasswordModalLabel">Change User Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="new_password" class="form-label">New Password</label>
+            <input type="password" name="new_password" id="new_password" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="new_password_confirmation" class="form-label">Confirm Password</label>
+            <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="admin_password" class="form-label">Your Password</label>
+            <input type="password" name="admin_password" id="admin_password" class="form-control" required placeholder="Re-enter your password to confirm">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Change Password</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
     </div>
 @endsection
 <script>
