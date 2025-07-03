@@ -71,6 +71,7 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
         </div>
+        @if (auth()->user()->isAdmin())
          <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('facilities.index')" :active="request()->routeIs('facilities.index')">
                 {{ __('Facilities') }}
@@ -96,6 +97,12 @@
                 {{ __('Sports') }}
             </x-responsive-nav-link>
         </div>
+          <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('coachingsessions.index')" :active="request()->routeIs('coachingsessions.index')">
+                {{ __('Coaching Sessions') }}
+            </x-responsive-nav-link>
+        </div>
+         @endif
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('coaches.list')" :active="request()->routeIs('coaches.list')">
                 {{ __('Coaches Profile') }}
@@ -106,11 +113,7 @@
                 {{ __('Sports Profiles') }}
             </x-responsive-nav-link>
         </div>
-         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('coachingsessions.index')" :active="request()->routeIs('coachingsessions.index')">
-                {{ __('Coaching Sessions') }}
-            </x-responsive-nav-link>
-        </div>
+       
          <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('calendar.index')" :active="request()->routeIs('calendar.index')">
                 {{ __('Booking Calendar') }}

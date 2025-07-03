@@ -33,14 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //resource routes 
-    Route::resource('facilities', FacilityController::class);
-    Route::resource('admins', AdminController::class);
-    Route::resource('bookings', BookingController::class);
-    Route::resource('sport_types', SportTypeController::class);
-    Route::resource('coaches', CoachController::class);
-    Route::resource('coachingsessions', CoachingSessionController::class);
-    Route::resource('payments', PaymentController::class);
-    Route::resource('users', UserController::class);
+
 
     // Calendar Routes
 Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
@@ -60,6 +53,14 @@ Route::put('/users/{id}/change-password', [UserController::class, 'changePasswor
 Route::middleware(['auth', 'admin.only'])->group(function () {
     // Route::resource('facilities', FacilityController::class);
     // Route::resource('coaches', CoachController::class);
+        Route::resource('facilities', FacilityController::class);
+    Route::resource('admins', AdminController::class);
+    Route::resource('bookings', BookingController::class);
+    Route::resource('sport_types', SportTypeController::class);
+    Route::resource('coaches', CoachController::class);
+    Route::resource('coachingsessions', CoachingSessionController::class);
+    Route::resource('payments', PaymentController::class);
+    Route::resource('users', UserController::class);
 });
 
 require __DIR__.'/auth.php';

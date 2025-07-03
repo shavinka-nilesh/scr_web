@@ -15,7 +15,7 @@
         @endif
 
 
-        <table class="hidden md:block table-auto w-full mt-4 bg-white shadow rounded">
+        <table class="hidden md:table table-auto w-full mt-4 bg-white shadow rounded">
             <thead>
                 <tr>
                     <th class="px-4 py-2">Session Id</th>

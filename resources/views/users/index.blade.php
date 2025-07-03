@@ -17,7 +17,8 @@
                 {{ session('error') }}
             </div>
         @endif
-        <table class="hidden md:block table-auto w-full mt-4 bg-white shadow rounded">
+
+        <table class="hidden md:table table-auto w-full mt-4 bg-white shadow rounded">
             <thead>
                 <tr>
                     <th class="px-4 py-2"></th>
@@ -52,6 +53,7 @@
                         <td class="px-4 py-2">{{ $facility->address }}</td>
                         <td class="px-4 py-2">{{ $facility->role }}</td>
                         <td class="px-4 py-2">
+                              <div class="flex justify-between">
                             <a href="{{ route('users.edit', $facility->id) }}" class="text-primary"><i
                                     class="fas fa-edit me-2"></i>Edit</a> |
                             <form action="{{ route('users.destroy', $facility->id) }}" method="POST" class="inline-block">
@@ -60,12 +62,14 @@
                                 <button type="submit" onclick="return confirm('Are you sure?')" class="text-red-600"><i
                                         class="fas fa-trash-alt me-2"></i>Delete</button>
                             </form>
+                             </div>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-        <div class="overflow-x-auto">
+
+        {{-- <div class="overflow-x-auto"> --}}
             {{-- second: “card-style” table only on small screens --}}
             <div class="mt-4 block md:hidden">
                 @foreach ($User as $f)
@@ -97,6 +101,6 @@
                     </div>
                 @endforeach
             </div>
-        </div>
+        {{-- </div> --}}
     </div>
 @endsection
