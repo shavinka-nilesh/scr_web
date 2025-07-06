@@ -21,6 +21,7 @@
         <thead>
             <tr>
                 <th class="px-4 py-2">Name</th>
+                <th class="px-4 py-2">Sport</th>
                 <th class="px-4 py-2">Specialization</th>
                 <th class="px-4 py-2">Contact</th>
                 <th class="px-4 py-2">Actions</th>
@@ -30,6 +31,7 @@
             @foreach($coaches as $coach)
             <tr class="border-t">
                 <td class="px-4 py-2">{{ $coach->name }}</td>
+                  <td class="px-4 py-2">{{ $coach->sportType->name ?? '—' }}</td>
                 <td class="px-4 py-2">{{ $coach->specialization }}</td>
                 <td class="px-4 py-2">{{ $coach->contact_number }}</td>
                 <td class="px-4 py-2">

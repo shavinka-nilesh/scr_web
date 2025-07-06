@@ -5,19 +5,22 @@ use App\Models\Booking;
 use App\Models\Facility;
 use App\Models\CoachingSession;
 use App\Models\Coach;
+use App\Models\SportType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 class CalendarController extends Controller
 {
     public function index()
 {
+     $sportTypes = SportType::all(); 
      $facilities = Facility::all();
      $coaches = Coach::all();
-    return view('calendar.calendar', compact('facilities','coaches'));
+    return view('calendar.calendar', compact('facilities','coaches','sportTypes'));
 }
 
 public function events()
 {
+
     $bookings = Booking::all();
     Log::info('Bookings in calendar:', $bookings->toArray());
     $sessions = CoachingSession::all();
