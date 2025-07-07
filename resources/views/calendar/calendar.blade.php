@@ -30,79 +30,84 @@
         </div>
     </div>
 
+   
     <!-- Coaching Session Modal -->
-    <div class="modal fade" id="sessionModal" tabindex="-1" aria-labelledby="sessionModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form id="sessionForm" method="POST" action="{{ route('calendar.store') }}">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title">Create Coaching Session</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <input type="hidden" name="session_date" id="session-date">
-
-                        <div class="mb-3">
-                            <label for="coach_id" class="form-label">Coach</label>
-                            <select name="coach_id" class="form-select" required>
-                                @foreach ($coaches as $coach)
-                                    <option value="{{ $coach->id }}">{{ $coach->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        {{-- <div class="mb-3">
-                            <label for="session_date" class="form-label">Select Date</label>
-                            <input type="date" name="session_date" class="form-control">
-                        </div> --}}
-                        {{-- For desktop fallback --}}
-                        {{-- <div class="mb-3">
-    <label for="session_date" class="form-label">Select Date</label>
-    <input type="date" name="session_date" id="session_date_fallback" class="form-control">
-</div> --}}
-                        @php
-                            $start = strtotime('06:00');
-                            $end = strtotime('22:00');
-                        @endphp
-                        <div class="mb-3">
-                            <label for="start_time" class="form-label">Start Time</label>
-                            <select name="start_time" class="form-select" required>
-                                @for ($i = $start; $i <= $end; $i += 1800)
-                                    {{-- 1800 seconds = 30 minutes --}}
-                                    @php $time = date('H:i', $i); @endphp
-                                    <option value="{{ $time }}">{{ date('g:i A', $i) }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="end_time" class="form-label">End Time</label>
-                            <select name="end_time" class="form-select" required>
-                                @for ($i = $start; $i <= $end; $i += 1800)
-                                    @php $time = date('H:i', $i); @endphp
-                                    <option value="{{ $time }}">{{ date('g:i A', $i) }}</option>
-                                @endfor
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <select name="status" class="form-select" required>
-                                <option value="pending">Pending</option>
-                                <option value="confirmed">Confirmed</option>
-                                <option value="cancelled">Cancelled</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success">Create Session</button>
-                    </div>
-                </form>
-            </div>
+<div class="modal fade" id="sessionModal" tabindex="-1" aria-labelledby="sessionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="sessionForm" method="POST" action="{{ route('calendar.store') }}">
+        @csrf
+        <div class="modal-header">
+          <h5 class="modal-title">Create Coaching Session</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-    </div>
+        <div class="modal-body">
+          <input type="hidden" name="session_date" id="session-date">
 
-    <!--Bookking Modal -->
+          {{-- 1) Sport Type --}}
+          <div class="mb-3">
+            <label for="session_sport_type" class="form-label">Sport Type</label>
+            <select name="session_sport_type" id="session_sport_type" class="form-select" required>
+              <option value="">Choose one…</option>
+              @foreach($sportTypes as $type)
+                <option value="{{ $type->id }}">{{ $type->name }}</option>
+              @endforeach
+            </select>
+          </div>
+
+          {{-- 2) Coach (filtered) --}}
+          <div class="mb-3">
+            <label for="coach_id" class="form-label">Coach</label>
+            <select name="coach_id" id="coach_id" class="form-select" required>
+              <option value="">First pick a sport type</option>
+            </select>
+          </div>
+
+          {{-- 3) Times & Status --}}
+          @php
+            $start = strtotime('06:00');
+            $end   = strtotime('22:00');
+          @endphp
+
+          <div class="mb-3">
+            <label class="form-label">Start Time</label>
+            <select name="start_time" class="form-select" required>
+              @for($i = $start; $i <= $end; $i += 1800)
+                <option value="{{ date('H:i',$i) }}">{{ date('g:i A',$i) }}</option>
+              @endfor
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">End Time</label>
+            <select name="end_time" class="form-select" required>
+              @for($i = $start; $i <= $end; $i += 1800)
+                <option value="{{ date('H:i',$i) }}">{{ date('g:i A',$i) }}</option>
+              @endfor
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select" required>
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success">Create Session</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+   
     <!-- Booking Modal -->
     <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
@@ -118,8 +123,8 @@
 
                         {{-- 1) Sport Type --}}
                        <div class="mb-3">
-  <label for="sport-type-select" class="form-label">Sport Type</label>
-  <select id="sport-type-select" class="form-select" required>
+  <label for="sport_type_id" class="form-label">Sport Type</label>
+  <select  name="sport_type_id" id="sport_type_id" class="form-select" required>
     <option value="">Choose one…</option>
     @foreach($sportTypes as $type)
       <option value="{{ $type->id }}">{{ $type->name }}</option>
@@ -188,6 +193,7 @@
 
 
     <script>
+     
         document.getElementById('sessionForm').addEventListener('submit', function() {
             const manualDate = document.getElementById('session_date_fallback').value;
             const hiddenInput = document.getElementById('session-date');
@@ -195,46 +201,54 @@
                 hiddenInput.value = manualDate;
             }
         });
-document.addEventListener('DOMContentLoaded', function() {
-     const allFacilities = @json($facilities);
-  const allCoaches    = @json($coaches);
 
-  const sportSelect    = document.getElementById('sport-type-select');
-  const facilitySelect = document.getElementById('facility-select');
-  const coachSelect    = document.getElementById('coach-select');
+            document.addEventListener('DOMContentLoaded', () => {
+                // --- Booking modal filter (already working) ---
+                const allFacilities = @json($facilities);
+                const allCoaches    = @json($coaches);
+                const sportSelect   = document.getElementById('sport_type_id');
+                const facilitySelect= document.getElementById('facility-select');
+                const coachSelect   = document.getElementById('coach-select');
 
-  sportSelect.addEventListener('change', function() {
-    const sportId = +this.value;              // numeric ID
-    // reset dropdowns
-    facilitySelect.innerHTML = '<option value="">Choose facility…</option>';
-    coachSelect   .innerHTML = '<option value="">Choose coach…</option>';
+                sportSelect.addEventListener('change', function() {
+                const id = +this.value;
+                facilitySelect.innerHTML = '<option>Choose facility…</option>';
+                coachSelect.innerHTML    = '<option>Choose coach…</option>';
 
-    // repopulate facilities
-    allFacilities
-      .filter(f => f.sport_type_id === sportId)
-      .forEach(f => {
-        const o = document.createElement('option');
-        o.value = f.id;
-        o.text  = f.name;
-        facilitySelect.appendChild(o);
-      });
+                allFacilities.filter(f => f.sport_type_id === id)
+                    .forEach(f => facilitySelect.append(new Option(f.name, f.id)));
 
-    // repopulate coaches
-    allCoaches
-      .filter(c => c.sport_type_id === sportId)
-      .forEach(c => {
-        const o = document.createElement('option');
-        o.value = c.id;
-        o.text  = c.name;
-        coachSelect.appendChild(o);
-      });
-  });
-  });
+                allCoaches.filter(c => c.sport_type_id === id)
+                    .forEach(c => coachSelect.append(new Option(c.name, c.id)));
+                });
+
+                // --- Coaching session modal filter ---
+                const sessSport    = document.getElementById('session_sport_type');
+                const sessCoach    = document.getElementById('coach_id');
+
+                sessSport.addEventListener('change', function() {
+                const id = +this.value;
+                sessCoach.innerHTML = '<option>Choose coach…</option>';
+                allCoaches.filter(c => c.sport_type_id === id)
+                    .forEach(c => sessCoach.append(new Option(c.name, c.id)));
+                });
+
+                // --- FullCalendar setup (unchanged) ---
+                const calendarEl = document.getElementById('calendar');
+                const calendar = new FullCalendar.Calendar(calendarEl, {
+                /* your existing config… */
+                });
+                calendar.render();
+            });
+
+
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date().toISOString().split('T')[0];
             document.querySelector('input[name="date"]').value = today;
             document.querySelector('input[name="session_date"]').value = today;
         });
+
+
         document.addEventListener('DOMContentLoaded', function() {
             const calendarEl = document.getElementById('calendar');
             const calendar = new FullCalendar.Calendar(calendarEl, {

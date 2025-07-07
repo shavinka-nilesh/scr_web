@@ -64,6 +64,7 @@ public function store(Request $request)
             'start_time' => 'required|string',
             'end_time' => 'required|string',
             'status' => 'required|in:pending,confirmed,cancelled',
+            'sport_type_id'=> 'required|string',
         ]);
 
         Booking::create([
@@ -73,12 +74,13 @@ public function store(Request $request)
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
             'status' => $request->status,
+            'sport_type_id' => $request->sport_type_id,
         ]);
 
         return redirect()->route('calendar.index')->with('success', 'Booking added successfully.');
 
     } elseif ($request->has('session_date')) {
-        // Log::info("Session Store Called".$request);
+        //Log::info("Session Store Called".$request);
         // This is a coaching session
         $request->validate([
             'coach_id' => 'required|exists:coaches,id',
@@ -86,6 +88,7 @@ public function store(Request $request)
             'start_time' => 'required|string',
             'end_time' => 'required|string',
             'status' => 'required|in:pending,confirmed,cancelled',
+            'session_sport_type'=>'required|string',
         ]);
 
         CoachingSession::create([
@@ -95,6 +98,7 @@ public function store(Request $request)
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
             'status' => $request->status,
+            'sport_type_id' => $request->session_sport_type,
         ]);
 
         return redirect()->route('calendar.index')->with('success', 'Coaching session added successfully.');

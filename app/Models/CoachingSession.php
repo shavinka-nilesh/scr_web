@@ -13,6 +13,7 @@ class CoachingSession extends Model
     'start_time',
     'end_time',
     'status',
+    'sport_type_id',
 ];
 protected $casts = [
     'date' => 'date',

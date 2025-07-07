@@ -21,7 +21,8 @@ protected $fillable = [
     'date',
     'start_time',
     'end_time',
-    'status', // pending, paid, cancelled
+    'status',
+    'sport_type_id',
 ];
 protected $casts = [
     'date' => 'date',
