@@ -23,6 +23,7 @@ protected $fillable = [
     'end_time',
     'status',
     'sport_type_id',
+    'coach_id'
 ];
 protected $casts = [
     'date' => 'date',

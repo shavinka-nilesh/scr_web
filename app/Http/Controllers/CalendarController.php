@@ -29,20 +29,33 @@ public function events()
 
     foreach ($bookings as $b) {
         $events[] = [
+            'id'    => $b->id,
             'title' => 'Booking',
            'start' => \Carbon\Carbon::parse($b->date)->format('Y-m-d') . 'T' . $b->start_time,
            'end' => \Carbon\Carbon::parse($b->date)->format('Y-m-d') . 'T' . $b->end_time,
             'color' => 'blue',
-               'textColor' => 'black'
+               'textColor' => 'black',
+               'extendedProps' => [
+          'facility_id'   => $b->facility_id,
+          'coach_id'      => $b->coach_id,
+          'sport_type_id' => $b->sport_type_id,
+          'status'        => $b->status,
+        ],
         ];
     }
 
     foreach ($sessions as $s) {
         $events[] = [
+             'id'    => $s->id,
             'title' => 'Coaching Session',
            'start' => \Carbon\Carbon::parse($s->session_date)->format('Y-m-d') . 'T' . $s->start_time,
- 'end' => \Carbon\Carbon::parse($s->session_date)->format('Y-m-d') . 'T' . $s->end_time,
+            'end' => \Carbon\Carbon::parse($s->session_date)->format('Y-m-d') . 'T' . $s->end_time,
             'color' => 'purple',
+             'extendedProps' => [
+            'session_sport_type' => $s->sport_type_id,
+             'coach_id'      => $s->coach_id, 
+              'status'        => $s->status,
+            ],
         ];
     }
 
