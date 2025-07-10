@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
 Route::get('/calendar/events', [CalendarController::class, 'events'])->name('calendar.events');
 Route::post('/calendar/store', [CalendarController::class, 'store'])->name('calendar.store');
+Route::post('/calendar/update', [CalendarController::class, 'update'])->name('calendar.update');
 
 // Other routes
 Route::get('/coaches-list', [CoachController::class, 'list'])->name('coaches.list');
@@ -53,7 +54,7 @@ Route::put('/users/{id}/change-password', [UserController::class, 'changePasswor
 Route::middleware(['auth', 'admin.only'])->group(function () {
     // Route::resource('facilities', FacilityController::class);
     // Route::resource('coaches', CoachController::class);
-        Route::resource('facilities', FacilityController::class);
+    Route::resource('facilities', FacilityController::class);
     Route::resource('admins', AdminController::class);
     Route::resource('bookings', BookingController::class);
     Route::resource('sport_types', SportTypeController::class);

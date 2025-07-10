@@ -10,7 +10,10 @@ class SportType extends Model
 {
     return $this->hasMany(Facility::class);
 }
-
+    public function bookings()
+{
+    return $this->hasMany(Booking::class);
+}
 protected $fillable = [
     'name',
     'description',

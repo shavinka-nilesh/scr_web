@@ -10,6 +10,10 @@ class Coach extends Model
 {
     return $this->hasMany(CoachingSession::class);
 }
+     public function bookings()
+{
+    return $this->hasMany(Booking::class);
+}
 public function sportType()
     {
         return $this->belongsTo(SportType::class);

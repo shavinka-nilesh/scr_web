@@ -10,10 +10,17 @@ class Booking extends Model
 {
     return $this->belongsTo(User::class);
 }
-
+public function coach()
+{
+    return $this->belongsTo(Coach::class);
+}
 public function facility()
 {
     return $this->belongsTo(Facility::class);
+}
+public function sportType()
+{
+    return $this->belongsTo(SportType::class);
 }
 protected $fillable = [
     'user_id',

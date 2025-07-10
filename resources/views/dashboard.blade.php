@@ -5,7 +5,11 @@
             {{ __('Dashboard') }}
         </h2> --}}
         {{-- ✅ Actual content goes here --}}
-        <div class="py-1">
+       
+    </x-slot>
+    @section('content')
+     {{-- <div><h3>Hello</h3></div> --}}
+      <div class="py-1">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden sm:rounded-lg p-6">
                     <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
@@ -72,8 +76,8 @@
                     }
                 }
             });
+            
         </script>
-    </x-slot>
-
+ @endsection
 
 </x-app-layout>

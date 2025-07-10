@@ -27,12 +27,34 @@
             </select>
         </div>
 
+          {{-- Facility Dropdown --}}
+        <div class="mb-4">
+            <label for="sport_type_id" class="block font-semibold mb-2">Sport Type</label>
+            <select name="sport_type_id" id="sport_type_id" class="form-select w-full px-3 py-2 border rounded">
+                @foreach($SportType as $sportType)
+                    <option value="{{ $sportType->id }}">{{ $sportType->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        
          {{-- Facility Dropdown --}}
         <div class="mb-4">
             <label for="facility_id" class="block font-semibold mb-2">Facility</label>
             <select name="facility_id" id="facility_id" class="form-select w-full px-3 py-2 border rounded">
                 @foreach($facilities as $facility)
-                    <option value="{{ $facility->id }}">{{ $facility->name }} ({{ $facility->sport_type }})</option>
+                    <option value="{{ $facility->id }}">{{ $facility->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
+      
+
+         {{-- Facility Dropdown --}}
+        <div class="mb-4">
+            <label for="coach_id" class="block font-semibold mb-2">Coach</label>
+            <select name="coach_id" id="coach_id" class="form-select w-full px-3 py-2 border rounded">
+                @foreach($Coach as $coach)
+                    <option value="{{ $coach->id }}">{{ $coach->name }}</option>
                 @endforeach
             </select>
         </div>

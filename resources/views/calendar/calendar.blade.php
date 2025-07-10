@@ -43,6 +43,7 @@
                     </div>
                     <div class="modal-body">
                         <input type="hidden" name="session_date" id="session-date">
+                        <input type="hidden" name="event_id" id="session-event-id">
 
                         {{-- 1) Sport Type --}}
                         <div class="mb-3">
@@ -120,6 +121,7 @@
                     </div>
                     <div class="modal-body">
                         <input type="hidden" name="date" id="booking-date">
+                        <input type="hidden" name="event_id" id="booking-event-id">
 
                         {{-- 1) Sport Type --}}
                         <div class="mb-3">
@@ -290,78 +292,88 @@
                     minute: '2-digit',
                     meridiem: 'long' // Ensures AM/PM is shown properly
                 },
-              eventClick(info) {
-  const ev = info.event;
+                eventClick(info) {
+                    const ev = info.event;
 
-  if (ev.title === 'Booking') {
-    // ---- Bookings ----
-    const sportSelect   = document.getElementById('sport_type_id');
-    const facilitySel   = document.getElementById('facility-select');
-    const coachSelect   = document.getElementById('coach-select');
-    const form          = document.getElementById('bookingForm');
-    const props         = ev.extendedProps;
+                    if (ev.title === 'Booking') {
+                        // ---- Bookings ----
+                        const sportSelect = document.getElementById('sport_type_id');
+                        const facilitySel = document.getElementById('facility-select');
+                        const coachSelect = document.getElementById('coach-select');
+                        const form = document.getElementById('bookingForm');
+                        const props = ev.extendedProps;
 
-    // 1) set Sport Type, then trigger your change‐listener to refill facility & coach
-    sportSelect.value = props.sport_type_id;
-    sportSelect.dispatchEvent(new Event('change'));
+                        // 1) set Sport Type, then trigger your change‐listener to refill facility & coach
+                        sportSelect.value = props.sport_type_id;
+                        sportSelect.dispatchEvent(new Event('change'));
 
-    // 2) once your listener has populated facility & coach, select the right ones
-    facilitySel.value = props.facility_id;
-    coachSelect.value = props.coach_id;
+                        // 2) once your listener has populated facility & coach, select the right ones
+                        facilitySel.value = props.facility_id;
+                        coachSelect.value = props.coach_id;
 
-    // 3) other fields…
-    document.querySelector('#bookingModal input[name="date"]').value     = ev.startStr.slice(0,10);
-    document.querySelector('#bookingModal select[name="start_time"]').value = ev.startStr.slice(11,16);
-    document.querySelector('#bookingModal select[name="end_time"]').value   = ev.endStr.slice(11,16);
-    document.querySelector('#bookingModal select[name="status"]').value     = props.status;
+                        // 3) other fields…
+                        document.querySelector('#bookingModal input[name="date"]').value = ev.startStr
+                            .slice(0, 10);
+                        document.querySelector('#bookingModal select[name="start_time"]').value = ev
+                            .startStr.slice(11, 16);
+                        document.querySelector('#bookingModal select[name="end_time"]').value = ev.endStr
+                            .slice(11, 16);
+                        document.querySelector('#bookingModal select[name="status"]').value = props.status;
+                        document.getElementById('booking-event-id').value = ev.id;
+                        // 4) swap to edit / PATCH
+                        //form.action = `/bookings/${ev.id}`;
+                        //let m = form.querySelector('[name="_method"]');
+                        //if (!m) {
+                          // m = document.createElement('input');
+                            //m.type = 'hidden';
+                            //m.name = '_method';
+                            //form.appendChild(m);
+                        //}
+                       // m.value = 'PATCH';
+                       form.action = "{{ route('calendar.update') }}";
+                       form.method = 'POST';            
 
-    // 4) swap to edit / PATCH
-    form.action = `/bookings/${ev.id}`;
-    let m = form.querySelector('[name="_method"]');
-    if (!m) {
-      m = document.createElement('input');
-      m.type  = 'hidden';
-      m.name  = '_method';
-      form.appendChild(m);
-    }
-    m.value = 'PATCH';
+                        new bootstrap.Modal(document.getElementById('bookingModal')).show();
+                    } else {
+                        // ---- Coaching Sessions ----
+                        const sportSess = document.getElementById('session_sport_type');
+                        const coachSess = document.getElementById('coach_id');
+                        const form = document.getElementById('sessionForm');
+                        const props = ev
+                        .extendedProps; // make sure your controller sets this to 'session_sport_type'
 
-    new bootstrap.Modal(document.getElementById('bookingModal')).show();
-  }
-  else {
-    // ---- Coaching Sessions ----
-    const sportSess  = document.getElementById('session_sport_type');
-    const coachSess  = document.getElementById('coach_id');
-    const form       = document.getElementById('sessionForm');
-    const props      = ev.extendedProps; // make sure your controller sets this to 'session_sport_type'
+                        // 1) set Sport Type, trigger your change‐listener to refill coach dropdown
+                        sportSess.value = props.session_sport_type;
+                        sportSess.dispatchEvent(new Event('change'));
 
-    // 1) set Sport Type, trigger your change‐listener to refill coach dropdown
-    sportSess.value = props.session_sport_type;
-    sportSess.dispatchEvent(new Event('change'));
+                        // 2) select the right coach
+                        coachSess.value = props.coach_id;
 
-    // 2) select the right coach
-    coachSess.value = props.coach_id;
+                        // 3) other fields…
+                        document.querySelector('#sessionModal input[name="session_date"]').value = ev
+                            .startStr.slice(0, 10);
+                        document.querySelector('#sessionModal select[name="start_time"]').value = ev
+                            .startStr.slice(11, 16);
+                        document.querySelector('#sessionModal select[name="end_time"]').value = ev.endStr
+                            .slice(11, 16);
+                        document.querySelector('#sessionModal select[name="status"]').value = props.status;
+                        document.getElementById('session-event-id').value = ev.id;
+                        // 4) swap action to PATCH
+                        // form.action = `/coachingsessions/${ev.id}`;
+                        // let m = form.querySelector('[name="_method"]');
+                        // if (!m) {
+                        //     m = document.createElement('input');
+                        //     m.type = 'hidden';
+                        //     m.name = '_method';
+                        //     form.appendChild(m);
+                        // }
+                        // m.value = 'PATCH';
+                          form.action = "{{ route('calendar.update') }}";
+                       form.method = 'POST';        
 
-    // 3) other fields…
-    document.querySelector('#sessionModal input[name="session_date"]').value = ev.startStr.slice(0,10);
-    document.querySelector('#sessionModal select[name="start_time"]').value   = ev.startStr.slice(11,16);
-    document.querySelector('#sessionModal select[name="end_time"]').value     = ev.endStr.slice(11,16);
-    document.querySelector('#sessionModal select[name="status"]').value       = props.status;
-
-    // 4) swap action to PATCH
-    form.action = `/coachingsessions/${ev.id}`;
-    let m = form.querySelector('[name="_method"]');
-    if (!m) {
-      m = document.createElement('input');
-      m.type  = 'hidden';
-      m.name  = '_method';
-      form.appendChild(m);
-    }
-    m.value = 'PATCH';
-
-    new bootstrap.Modal(document.getElementById('sessionModal')).show();
-  }
-},
+                        new bootstrap.Modal(document.getElementById('sessionModal')).show();
+                    }
+                },
 
             });
 
