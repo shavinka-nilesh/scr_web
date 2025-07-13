@@ -21,9 +21,18 @@ class CalendarController extends Controller
 public function events()
 {
 
-    $bookings = Booking::all();
-    Log::info('Bookings in calendar:', $bookings->toArray());
-    $sessions = CoachingSession::all();
+    $user       = auth()->user();
+    $isAdmin    = $user->role === 'admin';
+
+    // If admin, get everything; otherwise only theirs
+    $bookings = $isAdmin
+        ? Booking::all()
+        : Booking::where('user_id', $user->id)->get();
+
+    $sessions = $isAdmin
+        ? CoachingSession::all()
+        : CoachingSession::where('user_id', $user->id)->get();
+
 
     $events = [];
 

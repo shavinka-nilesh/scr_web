@@ -28,36 +28,41 @@
         </div>
 
           {{-- Facility Dropdown --}}
-        <div class="mb-4">
+        {{-- <div class="mb-4">
             <label for="sport_type_id" class="block font-semibold mb-2">Sport Type</label>
             <select name="sport_type_id" id="sport_type_id" class="form-select w-full px-3 py-2 border rounded">
                 @foreach($SportType as $sportType)
                     <option value="{{ $sportType->id }}">{{ $sportType->name }}</option>
                 @endforeach
             </select>
-        </div>
+        </div> --}}
         
-         {{-- Facility Dropdown --}}
-        <div class="mb-4">
-            <label for="facility_id" class="block font-semibold mb-2">Facility</label>
-            <select name="facility_id" id="facility_id" class="form-select w-full px-3 py-2 border rounded">
-                @foreach($facilities as $facility)
-                    <option value="{{ $facility->id }}">{{ $facility->name }}</option>
-                @endforeach
-            </select>
-        </div>
+        {{-- 1) Sport Type --}}
+      <div class="mb-4">
+        <label for="sport_type_id" class="block font-semibold mb-2">Sport Type</label>
+        <select name="sport_type_id" id="sport_type_id" class="form-select w-full px-3 py-2 border rounded" required>
+          <option value="">Choose one…</option>
+          @foreach($SportType as $type)
+            <option value="{{ $type->id }}">{{ $type->name }}</option>
+          @endforeach
+        </select>
+      </div>
 
-      
+         {{-- 2) Facility (will be filtered) --}}
+      <div class="mb-4">
+        <label for="facility_id" class="block font-semibold mb-2">Facility</label>
+        <select name="facility_id" id="facility_id" class="form-select w-full px-3 py-2 border rounded" required>
+          <option value="">First pick a sport type</option>
+        </select>
+      </div>
 
-         {{-- Facility Dropdown --}}
-        <div class="mb-4">
-            <label for="coach_id" class="block font-semibold mb-2">Coach</label>
-            <select name="coach_id" id="coach_id" class="form-select w-full px-3 py-2 border rounded">
-                @foreach($Coach as $coach)
-                    <option value="{{ $coach->id }}">{{ $coach->name }}</option>
-                @endforeach
-            </select>
-        </div>
+      {{-- 3) Coach (will be filtered) --}}
+      <div class="mb-4">
+        <label for="coach_id" class="block font-semibold mb-2">Coach</label>
+        <select name="coach_id" id="coach_id" class="form-select w-full px-3 py-2 border rounded" required>
+          <option value="">First pick a sport type</option>
+        </select>
+      </div>
 
         {{-- Date Picker --}}
         <div class="mb-4">
@@ -96,4 +101,32 @@
         </div>
     </form>
 </div>
+{{-- --- dynamic filtering script --- --}}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const allFacilities = @json($facilities);
+    const allCoaches    = @json($Coach);
+
+    const sportSel      = document.getElementById('sport_type_id');
+    const facilitySel   = document.getElementById('facility_id');
+    const coachSel      = document.getElementById('coach_id');
+
+    sportSel.addEventListener('change', function() {
+      const sportId = +this.value;
+      // reset
+      facilitySel.innerHTML = '<option value="">Choose facility…</option>';
+      coachSel.innerHTML    = '<option value="">Choose coach…</option>';
+
+      // repopulate facilities
+      allFacilities
+        .filter(f => f.sport_type_id === sportId)
+        .forEach(f => facilitySel.append(new Option(f.name, f.id)));
+
+      // repopulate coaches
+      allCoaches
+        .filter(c => c.sport_type_id === sportId)
+        .forEach(c => coachSel.append(new Option(c.name, c.id)));
+    });
+  });
+</script>
 @endsection

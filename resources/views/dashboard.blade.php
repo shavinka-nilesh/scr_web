@@ -9,32 +9,37 @@
     </x-slot>
     @section('content')
      {{-- <div><h3>Hello</h3></div> --}}
+     @php
+  $isAdmin = auth()->user()->role === 'admin';
+@endphp
+
       <div class="py-1">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden sm:rounded-lg p-6">
                     <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                        <a href="{{ route('coaches.index') }}"
+                        <a href="{{ route($isAdmin ? 'coaches.index' : 'coaches.list') }}"
                             class="block bg-white shadow p-4 rounded text-center hover:bg-blue-50 transition">
                             <h2 class="text-lg font-semibold">Coaches</h2>
                             <p class="text-3xl font-bold text-blue-600">{{ $coachCount }}</p>
                         </a>
                         <!-- Add other tiles here... -->
 
-                        <a href="{{ route('facilities.index') }}"
+                        <a href="{{ route($isAdmin ? 'facilities.index' : 'facilities.list') }}"
                             class="block bg-white shadow p-4 rounded text-center hover:bg-green-50 transition">
                             <h2 class="text-lg font-semibold">Facilities</h2>
                             <p class="text-3xl font-bold text-green-600">{{ $facilityCount }}</p>
                         </a>
 
-                        <a href="{{ route('coachingsessions.index') }}"
+                        <a href="{{ route($isAdmin ? 'sport_types.index' : 'sport_types.list') }}"
                             class="block bg-white shadow p-4 rounded text-center hover:bg-purple-50 transition">
                             <h2 class="text-lg font-semibold">Sessions (This Week)</h2>
                             <p class="text-3xl font-bold text-purple-600">{{ $coachingSessionCount }}</p>
                         </a>
 
-                        <a href="{{ route('bookings.index') }}"
+                       
+                         <a href="{{ route($isAdmin ? 'bookings.index' : 'calendar.index') }}"
                             class="block bg-white shadow p-4 rounded text-center hover:bg-red-50 transition">
                             <h2 class="text-lg font-semibold">Bookings (Today)</h2>
                             <p class="text-3xl font-bold text-red-600">{{ $bookingCount }}</p>

@@ -68,8 +68,10 @@ class BookingController extends Controller
     {
             $users = User::all();
     $facilities = Facility::all();
+     $SportType = SportType::all();
+                $Coach = Coach::all();
          $Bookings = Booking::findOrFail($id);
-         return view('bookings.edit', compact('facilities','users', 'Bookings'));
+         return view('bookings.edit', compact('facilities','users', 'Bookings','SportType','Coach'));
     }
 
     /**

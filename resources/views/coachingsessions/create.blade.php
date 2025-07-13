@@ -26,16 +26,23 @@
                 @endforeach
             </select>
         </div>
+ <div class="mb-4">
+        <label for="sport_type_id" class="block font-semibold mb-2">Sport Type</label>
+        <select name="sport_type_id" id="sport_type_id" class="form-select w-full px-3 py-2 border rounded" required>
+          <option value="">Choose one…</option>
+          @foreach($SportType as $type)
+            <option value="{{ $type->id }}">{{ $type->name }}</option>
+          @endforeach
+        </select>
+      </div>
 
-        {{-- Coach Dropdown --}}
-        <div class="mb-4">
-            <label for="coach_id" class="block font-semibold mb-2">Coach</label>
-            <select name="coach_id" id="coach_id" class="form-select w-full px-3 py-2 border rounded">
-                @foreach($coaches as $coach)
-                    <option value="{{ $coach->id }}">{{ $coach->name }}</option>
-                @endforeach
-            </select>
-        </div>
+       {{-- 3) Coach (will be filtered) --}}
+      <div class="mb-4">
+        <label for="coach_id" class="block font-semibold mb-2">Coach</label>
+        <select name="coach_id" id="coach_id" class="form-select w-full px-3 py-2 border rounded" required>
+          <option value="">First pick a sport type</option>
+        </select>
+      </div>
 
         {{-- Date Picker --}}
         <div class="mb-4">
@@ -74,4 +81,26 @@
         </div>
     </form>
 </div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  
+    const allCoaches    = @json($coaches);
+
+    const sportSel      = document.getElementById('sport_type_id');
+  
+    const coachSel      = document.getElementById('coach_id');
+
+    sportSel.addEventListener('change', function() {
+      const sportId = +this.value;
+      // reset
+  
+      coachSel.innerHTML    = '<option value="">Choose coach…</option>';
+
+      // repopulate coaches
+      allCoaches
+        .filter(c => c.sport_type_id === sportId)
+        .forEach(c => coachSel.append(new Option(c.name, c.id)));
+    });
+  });
+</script>
 @endsection
