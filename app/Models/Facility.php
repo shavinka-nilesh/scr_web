@@ -14,6 +14,15 @@ public function coachingSessions()
 {
     return $this->hasMany(CoachingSession::class);
 }
+
+public function sportType()
+{
+    return $this->belongsTo(SportType::class);
+}
+    public function images()
+{
+    return $this->hasMany(FacilityImage::class);
+}
 protected $fillable = [
     'name',
     'location',

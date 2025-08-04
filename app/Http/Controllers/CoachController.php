@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 use App\Models\Coach;
+use App\Models\SportType;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 class CoachController extends Controller
 {
     /**
@@ -20,7 +21,8 @@ class CoachController extends Controller
      */
     public function create()
     {
-        return view('coaches.create');
+        $sportTypes = SportType::all();
+        return view('coaches.create', compact('sportTypes'));
     }
 
     /**
@@ -31,6 +33,7 @@ class CoachController extends Controller
         $request->validate([
             'name' => 'required|string',
             'specialization' => 'required|string',
+             'sport_type_id' => 'nullable|string',
             'bio' => 'nullable|string',
             'contact_number' => 'nullable|string',
         ]);
@@ -54,7 +57,8 @@ class CoachController extends Controller
     public function edit(string $id)
     {
          $coach = Coach::findOrFail($id);
-         return view('coaches.edit', compact('coach'));
+          $sportTypes = SportType::all();
+         return view('coaches.edit', compact('coach','sportTypes'));
     }
 
     /**
@@ -65,6 +69,7 @@ class CoachController extends Controller
           $request->validate([
             'name' => 'required|string',
             'specialization' => 'required|string',
+             'sport_type_id' => 'nullable|string',
             'bio' => 'nullable|string',
             'contact_number' => 'nullable|string',
         ]);
@@ -74,7 +79,7 @@ class CoachController extends Controller
     $coach = Coach::findOrFail($id);
 
     // Then update with validated data
-    $coach->update($request->only(['name', 'specialization', 'bio', 'contact_number']));
+    $coach->update($request->only(['name', 'specialization', 'bio', 'contact_number','sport_type_id']));
 
         return redirect()->route('coaches.index')->with('success', 'Coach updated successfully.');
     }
@@ -85,8 +90,30 @@ class CoachController extends Controller
     public function destroy(string $id)
     {
          $coach = Coach::findOrFail($id);
-        $coach->delete();
+          if ($coach->coachingSessions()->exists()) {
+            Log::info('Coach cant delete');
+        return redirect()->route('coaches.index') ->with('error', 'Cannot delete coach with scheduled coaching sessions.');
+    } else{
+ $coach->delete();
 
-        return redirect()->route('coaches.index')->with('success', 'Coach deleted successfully.');
+        
     }
+
+       return redirect()->route('coaches.index')->with('success', 'Coach deleted successfully.');
+    }
+
+  public function list(Request $request)
+{
+    $query = $request->input('search');
+
+    $coaches = Coach::query()
+        ->when($query, function ($q) use ($query) {
+            $q->where('name', 'like', "%{$query}%")
+              ->orWhere('specialization', 'like', "%{$query}%");
+        })
+        ->get();
+
+    return view('coaches.list', compact('coaches'));
+}
+
 }

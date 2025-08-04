@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\CoachingSession;
 use App\Models\User;
 use App\Models\Coach;
+use App\Models\SportType;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
@@ -24,8 +25,9 @@ class CoachingSessionController extends Controller
     public function create()
     {
          $users = User::all();
+           $SportType = SportType::all();
     $coaches = Coach::all();
-    return view('coachingsessions.create', compact('users', 'coaches'));
+    return view('coachingsessions.create', compact('users', 'coaches','SportType'));
     }
 
     /**
@@ -64,8 +66,9 @@ class CoachingSessionController extends Controller
     {
          $users = User::all();
     $coaches = Coach::all();
+      $SportType = SportType::all();
          $coachingSessions = CoachingSession::findOrFail($id);
-         return view('coachingsessions.edit', compact('coachingSessions','users', 'coaches'));
+         return view('coachingsessions.edit', compact('coachingSessions','users', 'coaches','SportType'));
     }
 
     /**

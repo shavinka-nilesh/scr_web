@@ -30,6 +30,19 @@
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
         </div>
 
+         <div class="mb-4">
+                <label for="sport_type_id" class="block font-semibold mb-2">Sport Type</label>
+                <select name="sport_type_id" id="sport_type_id" class="form-select w-full px-3 py-2 border rounded">
+                    <option value="">-- pick one --</option>
+                    @foreach ($sportTypes as $st)
+                        <option value="{{ $st->id }}"
+                            {{ old('sport_type_id', $coach->sport_type_id ?? '') == $st->id ? 'selected' : '' }}>
+                            {{ $st->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            
         <div class="mb-4">
             <label for="contact_number" class="block text-gray-700 font-semibold mb-2">Contact Number</label>
             <input type="text" name="contact_number" id="contact_number" value="{{ old('contact_number', $coach->contact_number) }}" required

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 use App\Models\Facility;
+use App\Models\SportType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Models\FacilityImage;
 
 class FacilityController extends Controller
 {
@@ -11,7 +14,7 @@ class FacilityController extends Controller
      */
     public function index()
     {
-           $facilities = Facility::all();
+           $facilities = Facility::with(['sportType'])->get();
         return view('facilities.index', compact('facilities'));
     }
 
@@ -20,7 +23,8 @@ class FacilityController extends Controller
      */
     public function create()
     {
-        return view('facilities.create');
+            $SportType = SportType::all();
+        return view('facilities.create', compact('SportType'));
     }
 
     /**
@@ -34,9 +38,18 @@ class FacilityController extends Controller
             'capacity' => 'required|string',
             'location' => 'required|string',
             'description' => 'nullable|string',
+             'images.*' => 'image|mimes:jpg,jpeg,png|max:2048', // max 2MB per image
         ]);
 
-        Facility::create($request->all());
+        $facility = Facility::create($request->only(['name', 'sport_type', 'capacity', 'location', 'description']));
+
+       // ✅ Upload each image
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $image) {
+            $path = $image->store('facilities', 'public');
+            $facility->images()->create(['path' => $path]);
+        }
+    }
 
         return redirect()->route('facilities.index')->with('success', 'Facilitiey added successfully.');
     }
@@ -53,9 +66,9 @@ class FacilityController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
-    {
+    {   $SportType = SportType::all();
           $facility = Facility::findOrFail($id);
-         return view('facilities.edit', compact('facility'));
+         return view('facilities.edit', compact('facility','SportType'));
     }
 
     /**
@@ -77,6 +90,12 @@ class FacilityController extends Controller
 
     // Then update with validated data
     $facility->update($request->only(['name', 'sport_type', 'capacity', 'location', 'description']));
+if ($request->hasFile('images')) {
+    foreach ($request->file('images') as $file) {
+        $path = $file->store('facilities', 'public');
+        $facility->images()->create(['path' => $path]);
+    }
+}
 
         return redirect()->route('facilities.index')->with('success', 'Facility updated successfully.');
     }
@@ -86,9 +105,45 @@ class FacilityController extends Controller
      */
     public function destroy(string $id)
     {
+        
           $facility = Facility::findOrFail($id);
-        $facility->delete();
+          if ($facility->bookings()->exists()) {
+    return redirect()->route('facilities.index')
+        ->with('error', 'Cannot delete facility with active bookings.');
+}else{
+ $facility->delete();
+}
+       
+
 
         return redirect()->route('facilities.index')->with('success', 'Facility deleted successfully.');
     }
+
+    public function deleteImage($id)
+{
+    $image = FacilityImage::findOrFail($id);
+
+    // Delete the image file
+    // \Storage::disk('public')->delete($image->path);
+
+    // Delete the DB record
+    $image->delete();
+
+    return response()->json(['success' => true]);
+}
+
+public function list(Request $request)
+{
+    $search = $request->input('search');
+
+    $facilities = Facility::with('images')
+        ->when($search, function ($query, $search) {
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('sport_type', 'like', "%{$search}%");
+        })
+        ->get();
+
+    return view('facilities.list', compact('facilities'));
+}
+
 }

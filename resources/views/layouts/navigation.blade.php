@@ -71,6 +71,64 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
         </div>
+        @if (auth()->user()->isAdmin())
+         <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('facilities.index')" :active="request()->routeIs('facilities.index')">
+                {{ __('Facilities') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.index')">
+                {{ __('Bookings') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('coaches.index')" :active="request()->routeIs('coaches.index')">
+                {{ __('Coaches') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                {{ __('Users') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('sport_types.index')" :active="request()->routeIs('sport_types.index')">
+                {{ __('Sports') }}
+            </x-responsive-nav-link>
+        </div>
+          <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('coachingsessions.index')" :active="request()->routeIs('coachingsessions.index')">
+                {{ __('Coaching Sessions') }}
+            </x-responsive-nav-link>
+        </div>
+         @endif
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('coaches.list')" :active="request()->routeIs('coaches.list')">
+                {{ __('Coaches Profile') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('sport_types.list')" :active="request()->routeIs('sport_types.list')">
+                {{ __('Sports Profiles') }}
+            </x-responsive-nav-link>
+        </div>
+       
+         <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('calendar.index')" :active="request()->routeIs('calendar.index')">
+                {{ __('Booking Calendar') }}
+            </x-responsive-nav-link>
+        </div>
+        {{-- <a href="{{ route('dashboard') }}" class="block px-6 py-2 text-gray-700 hover:bg-gray-200">Dashboard</a>
+        <a href="{{ route('facilities.index') }}" class="block px-6 py-2 text-gray-700 hover:bg-gray-200">Facilities</a>
+        <a href="{{ route('bookings.index') }}" class="block px-6 py-2 text-gray-700 hover:bg-gray-200">Bookings</a>
+        <a href="{{ route('coaches.index') }}" class="block px-6 py-2 text-gray-700 hover:bg-gray-200">Coaches</a>
+         <a href="{{ route('users.index') }}" class="block px-6 py-2 text-gray-700 hover:bg-gray-200">Users</a>
+          <a href="{{ route('sport_types.index') }}" class="block px-6 py-2 text-gray-700 hover:bg-gray-200">Sport Types</a>
+         <a href="{{ route('coaches.list') }}" class="block px-6 py-2 text-gray-700 hover:bg-gray-200">Coaches Profile</a>
+         <a href="{{ route('sport_types.list') }}" class="block px-6 py-2 text-gray-700 hover:bg-gray-200">Sports Profiles</a>
+        <a href="{{ route('coachingsessions.index') }}" class="block px-6 py-2 text-gray-700 hover:bg-gray-200">Coaching Sessions</a>
+        <a href="{{ route('calendar.index') }}" class="block px-6 py-2 text-gray-700 hover:bg-gray-200">Booking Calendar</a> --}}
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">

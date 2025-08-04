@@ -32,18 +32,29 @@
                 </select>
             </div>
 
-            {{-- Coach Dropdown --}}
-            <div class="mb-4">
-                <label for="coach_id" class="block font-semibold mb-2">Coach</label>
-                <select name="coach_id" id="coach_id" class="form-select w-full px-3 py-2 border rounded">
-                    @foreach ($coaches as $coach)
-                        <option value="{{ $coach->id }}"
-                            {{ old('coach_id', $coachingSessions->coach_id) == $coach->id ? 'selected' : '' }}>
-                            {{ $coach->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+             {{-- 1) Sport Type --}}
+      <div class="mb-4">
+        <label for="sport_type_id" class="block font-semibold mb-2">Sport Type</label>
+        <select name="sport_type_id" id="sport_type_id"
+                class="form-select w-full px-3 py-2 border rounded" required>
+          <option value="">Choose one…</option>
+          @foreach($SportType as $type)
+            <option value="{{ $type->id }}"
+              {{ old('sport_type_id', $coachingSessions->sport_type_id) == $type->id ? 'selected' : '' }}>
+              {{ $type->name }}
+            </option>
+          @endforeach
+        </select>
+      </div>
+
+            {{-- 3) Coach --}}
+      <div class="mb-4">
+        <label for="coach_id" class="block font-semibold mb-2">Coach</label>
+        <select name="coach_id" id="coach_id"
+                class="form-select w-full px-3 py-2 border rounded" required>
+          {{-- options will be injected by JS --}}
+        </select>
+      </div>
 
             <div class="mb-4">
                 <label for="coach_id" class="block font-semibold mb-2">Date</label>
@@ -84,4 +95,35 @@
             </div>
         </form>
     </div>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+  // full lists from blade
+
+  const allCoaches    = @json($coaches);
+
+  const sportSel    = document.getElementById('sport_type_id');
+
+  const coachSel    = document.getElementById('coach_id');
+
+  function refill() {
+    const sid = +sportSel.value;
+    coachSel.innerHTML    = '';
+  
+   
+    // populate matching coaches
+    allCoaches
+      .filter(c => c.sport_type_id === sid)
+      .forEach(c => {
+        const o = new Option(c.name, c.id);
+        if (c.id === {{ $coachingSessions->coach_id }}) o.selected = true;
+        coachSel.add(o);
+      });
+  }
+
+  sportSel.addEventListener('change', refill);
+
+  // on load: trigger refill to set current
+  refill();
+});
+</script>
 @endsection

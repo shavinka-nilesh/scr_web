@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\User;
 use App\Models\Coach;
+use App\Models\SportType;
 use App\Models\Facility;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
@@ -26,7 +27,9 @@ class BookingController extends Controller
     {
           $users = User::all();
             $facilities = Facility::all();
-    return view('bookings.create', compact('users','facilities'));
+               $SportType = SportType::all();
+                $Coach = Coach::all();
+    return view('bookings.create', compact('users','facilities','SportType','Coach'));
     }
 
     /**
@@ -65,8 +68,10 @@ class BookingController extends Controller
     {
             $users = User::all();
     $facilities = Facility::all();
+     $SportType = SportType::all();
+                $Coach = Coach::all();
          $Bookings = Booking::findOrFail($id);
-         return view('bookings.edit', compact('facilities','users', 'Bookings'));
+         return view('bookings.edit', compact('facilities','users', 'Bookings','SportType','Coach'));
     }
 
     /**
